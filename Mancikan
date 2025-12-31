@@ -31,6 +31,10 @@ local fishes = {
     {name="El Maja", rarity="Secret"},
     {name="El Maja Pink", rarity="Secret"},
     {name="Kuzjuy Shark", rarity="Secret"},
+    {name="Megalodon X1x1x1", rarity="Secret"},
+    {name="Megalodon Christmas", rarity="Secret"},
+    {name="El Maja White", rarity="Secret"},
+    {name="El Maja Green", rarity="Secret"},
 }
 
 local selectedFish = fishes[1]
