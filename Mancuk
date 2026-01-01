@@ -23,13 +23,13 @@ local hookPosition = Vector3.new(
 -- ================= FISH LIST =================
 local fishes = {
     { name = "Megalodon", rarity = "Secret" },
-    { name = "Hammerhead Shark", rarity = "Secret" },
+    { name = "Ghost WShark rarity = "Secret" },
     { name = "El Maja", rarity = "Secret" },
     { name = "El Maja Pink", rarity = "Secret" },
     { name = "Frostborn Shark", rarity = "Secret" },
     { name = "Ancient Lochness Monster", rarity = "Secret" },
     { name = "Kraken", rarity = "Secret" },
-    { name = "Zombie Shark", rarity = "Secret" },
+    { name = "Zombie Megalodon", rarity = "Secret" },
 }
 
 local selectedFish = fishes[1]
