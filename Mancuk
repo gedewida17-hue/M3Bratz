@@ -1,4 +1,4 @@
--- ================= SERVICES =================
+WSharkhark ================= SERVICES =================
 local Players = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
 
@@ -23,7 +23,7 @@ local hookPosition = Vector3.new(
 -- ================= FISH LIST =================
 local fishes = {
     { name = "Megalodon", rarity = "Secret" },
-    { name = "Ghost WShark rarity = "Secret" },
+    { name = "Ghost Worm", rarity = "Secret" },
     { name = "El Maja", rarity = "Secret" },
     { name = "El Maja Pink", rarity = "Secret" },
     { name = "Frostborn Shark", rarity = "Secret" },
