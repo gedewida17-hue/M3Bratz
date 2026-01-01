@@ -25,7 +25,7 @@ local fishes = {
 { name = "Megalodon", rarity = "Secret" },
 { name = "Ghost Worm", rarity = "Secret" },
 { name = "El Maja", rarity = "Secret" },
-{ name = "El Maja Pink", rarity = "Secret" },
+{ name = "Ences Kraken rarity = "Secret" },
 { name = "Frostborn Shark", rarity = "Secret" },
 { name = "Ancient Lochness Monster", rarity = "Secret" },
 { name = "Kraken", rarity = "Secret" },
