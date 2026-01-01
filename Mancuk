@@ -1,4 +1,4 @@
-WSharkhark ================= SERVICES =================
+ ================= SERVICES =================
 local Players = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
 
