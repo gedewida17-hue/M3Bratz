@@ -1,12 +1,12 @@
- ================= SERVICES =================
+-- ================= SERVICES =================
 local Players = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
 
 local player = Players.LocalPlayer
 local FishGiver = RS
-    :WaitForChild("FishingSystem")
-    :WaitForChild("FishingSystemEvents")
-    :WaitForChild("FishGiver")
+:WaitForChild("FishingSystem")
+:WaitForChild("FishingSystemEvents")
+:WaitForChild("FishGiver")
 
 -- ================= CONFIG =================
 local delayTime = 0.8
@@ -15,32 +15,32 @@ local minimized = false
 local randomMode = false -- default MANUAL
 
 local hookPosition = Vector3.new(
-    51.01224899292,
-    16.149969100952,
-    -103.2292098999
+51.01224899292,
+16.149969100952,
+-103.2292098999
 )
 
 -- ================= FISH LIST =================
 local fishes = {
-    { name = "Megalodon", rarity = "Secret" },
-    { name = "Ghost Worm", rarity = "Secret" },
-    { name = "El Maja", rarity = "Secret" },
-    { name = "El Maja Pink", rarity = "Secret" },
-    { name = "Frostborn Shark", rarity = "Secret" },
-    { name = "Ancient Lochness Monster", rarity = "Secret" },
-    { name = "Kraken", rarity = "Secret" },
-    { name = "Zombie Megalodon", rarity = "Secret" },
+{ name = "Megalodon", rarity = "Secret" },
+{ name = "Ghost Worm", rarity = "Secret" },
+{ name = "El Maja", rarity = "Secret" },
+{ name = "El Maja Pink", rarity = "Secret" },
+{ name = "Frostborn Shark", rarity = "Secret" },
+{ name = "Ancient Lochness Monster", rarity = "Secret" },
+{ name = "Kraken", rarity = "Secret" },
+{ name = "Zombie Megalodon", rarity = "Secret" },
 }
 
 local selectedFish = fishes[1]
 
 -- ================= RANDOM =================
 local function getRandomFish()
-    return fishes[math.random(1, #fishes)]
+return fishes[math.random(1, #fishes)]
 end
 
 local function getRandomWeight()
-    return math.random(6000, 8000) / 10 -- 600 - 800
+return math.random(6000, 8000) / 10 -- 600 - 800
 end
 
 -- ================= GUI =================
@@ -97,28 +97,29 @@ Scroll.BackgroundTransparency = 1
 
 -- ================= FISH BUTTONS =================
 local function refreshFishButtons()
-    for _,v in ipairs(Scroll:GetChildren()) do
-        if v:IsA("TextButton") then v:Destroy() end
-    end
+for _,v in ipairs(Scroll:GetChildren()) do
+if v:IsA("TextButton") then v:Destroy() end
+end
 
-    for i, fish in ipairs(fishes) do
-        local btn = Instance.new("TextButton", Scroll)
-        btn.Size = UDim2.new(1, 0, 0, 45)
-        btn.Position = UDim2.new(0, 0, 0, (i-1)*55)
-        btn.Text = fish.name .. " (" .. fish.rarity .. ")"
-        btn.Font = Enum.Font.Gotham
-        btn.TextScaled = true
-        btn.BackgroundColor3 = Color3.fromRGB(45,45,45)
-        btn.TextColor3 = Color3.new(1,1,1)
-        Instance.new("UICorner", btn)
+for i, fish in ipairs(fishes) do    
+    local btn = Instance.new("TextButton", Scroll)    
+    btn.Size = UDim2.new(1, 0, 0, 45)    
+    btn.Position = UDim2.new(0, 0, 0, (i-1)*55)    
+    btn.Text = fish.name .. " (" .. fish.rarity .. ")"    
+    btn.Font = Enum.Font.Gotham    
+    btn.TextScaled = true    
+    btn.BackgroundColor3 = Color3.fromRGB(45,45,45)    
+    btn.TextColor3 = Color3.new(1,1,1)    
+    Instance.new("UICorner", btn)    
 
-        btn.MouseButton1Click:Connect(function()
-            selectedFish = fish
-            Title.Text = "Selected: " .. fish.name
-        end)
-    end
+    btn.MouseButton1Click:Connect(function()    
+        selectedFish = fish    
+        Title.Text = "Selected: " .. fish.name    
+    end)    
+end    
 
-    Scroll.CanvasSize = UDim2.new(0,0,0,#fishes * 55)
+Scroll.CanvasSize = UDim2.new(0,0,0,#fishes * 55)
+
 end
 
 refreshFishButtons()
@@ -146,55 +147,56 @@ Instance.new("UICorner", OnceBtn)
 
 -- ================= CORE LOGIC =================
 local function fireFish()
-    local fish = randomMode and getRandomFish() or selectedFish
-    Title.Text = (randomMode and "Random: " or "Manual: ") .. fish.name
+local fish = randomMode and getRandomFish() or selectedFish
+Title.Text = (randomMode and "Random: " or "Manual: ") .. fish.name
 
-    FishGiver:FireServer({
-        hookPosition = hookPosition,
-        name = fish.name,
-        rarity = fish.rarity,
-        weight = getRandomWeight()
-    })
+FishGiver:FireServer({    
+    hookPosition = hookPosition,    
+    name = fish.name,    
+    rarity = fish.rarity,    
+    weight = getRandomWeight()    
+})
+
 end
 
 task.spawn(function()
-    while true do
-        if running then
-            fireFish()
-            task.wait(delayTime)
-        else
-            task.wait(0.1)
-        end
-    end
+while true do
+if running then
+fireFish()
+task.wait(delayTime)
+else
+task.wait(0.1)
+end
+end
 end)
 
 -- ================= EVENTS =================
 SpamBtn.MouseButton1Click:Connect(function()
-    running = not running
-    SpamBtn.Text = running and "SPAM ON" or "SPAM OFF"
-    SpamBtn.BackgroundColor3 = running
-        and Color3.fromRGB(0,170,0)
-        or Color3.fromRGB(170,0,0)
+running = not running
+SpamBtn.Text = running and "SPAM ON" or "SPAM OFF"
+SpamBtn.BackgroundColor3 = running
+and Color3.fromRGB(0,170,0)
+or Color3.fromRGB(170,0,0)
 end)
 
 OnceBtn.MouseButton1Click:Connect(function()
-    fireFish()
+fireFish()
 end)
 
 ModeBtn.MouseButton1Click:Connect(function()
-    randomMode = not randomMode
-    Scroll.Visible = not randomMode
-    ModeBtn.Text = randomMode and "MODE: RANDOM" or "MODE: MANUAL"
-    Title.Text = randomMode and "Fish Spammer (Random)" or "Fish Spammer (Manual)"
+randomMode = not randomMode
+Scroll.Visible = not randomMode
+ModeBtn.Text = randomMode and "MODE: RANDOM" or "MODE: MANUAL"
+Title.Text = randomMode and "Fish Spammer (Random)" or "Fish Spammer (Manual)"
 end)
 
 MinBtn.MouseButton1Click:Connect(function()
-    minimized = not minimized
-    for _,v in ipairs(Main:GetChildren()) do
-        if (v:IsA("TextButton") or v:IsA("TextLabel") or v:IsA("ScrollingFrame")) and v ~= MinBtn then
-            v.Visible = not minimized
-        end
-    end
-    MinBtn.Text = minimized and "+" or "-"
-    Main.Size = minimized and UDim2.fromOffset(150,40) or UDim2.fromScale(0.55,0.6)
+minimized = not minimized
+for _,v in ipairs(Main:GetChildren()) do
+if (v:IsA("TextButton") or v:IsA("TextLabel") or v:IsA("ScrollingFrame")) and v ~= MinBtn then
+v.Visible = not minimized
+end
+end
+MinBtn.Text = minimized and "+" or "-"
+Main.Size = minimized and UDim2.fromOffset(150,40) or UDim2.fromScale(0.55,0.6)
 end)
