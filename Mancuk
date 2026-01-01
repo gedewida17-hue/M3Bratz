@@ -25,7 +25,7 @@ local fishes = {
 { name = "Megalodon", rarity = "Secret" },
 { name = "Ghost Worm", rarity = "Secret" },
 { name = "El Maja", rarity = "Secret" },
-{ name = "Ences Kraken rarity = "Secret" },
+{ name = "Ences Maja", rarity = "Secret" },
 { name = "Frostborn Shark", rarity = "Secret" },
 { name = "Ancient Lochness Monster", rarity = "Secret" },
 { name = "Kraken", rarity = "Secret" },
@@ -199,4 +199,4 @@ end
 end
 MinBtn.Text = minimized and "+" or "-"
 Main.Size = minimized and UDim2.fromOffset(150,40) or UDim2.fromScale(0.55,0.6)
-end)
+endPinkink
