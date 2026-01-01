@@ -1,195 +1,278 @@
--- SERVICES
+-- FULL SCRIPT TES SPAM SECRET FISH GIVER (FIXED: Full GUI + Auto Position + Mobile Draggable/Minimize/Close)
+
 local Players = game:GetService("Players")
-local RS = game:GetService("ReplicatedStorage")
+local Player = Players.LocalPlayer
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local player = Players.LocalPlayer
-local FishGiver = RS:WaitForChild("FishingSystem"):WaitForChild("FishGiver")
+-- Get event
+local Event
+spawn(function()
+    Event = ReplicatedStorage:WaitForChild("FishingSystem"):WaitForChild("FishGiver")
+end)
 
--- CONFIG
-local delayTime = 0.8
-local running = false
-local minimized = false
-local randomMode = true
-
-local hookPosition = Vector3.new(
-    744.14373779297,
-    128.14999389648,
-    -809.01531982422
-)
-
--- RANDOM WEIGHT
-local function getRandomWeight()
-    return math.random(5000,7000) / 10
-end
-
--- FISH LIST (UPDATED)
-local fishes = {
-    {name="King Monster", rarity="Secret"},
-    {name="Ciyup Carber", rarity="Secret"},
-    {name="Whale Shark", rarity="Secret"},
-    {name="Megalodon Core", rarity="Secret"},
-    {name="El Maja", rarity="Secret"},
-    {name="El Maja Pink", rarity="Secret"},
-    {name="Kuzjuy Shark", rarity="Secret"},
-    {name="Megalodon X1x1x1", rarity="Secret"},
-    {name="Megalodon Christmas", rarity="Secret"},
-    {name="El Maja White", rarity="Secret"},
-    {name="El Maja Green", rarity="Secret"},
+-- Secret fishes
+local secretFishes = {
+    "Dolphin Wheal", "Wiliw Dolphin", "Megalodon X1x1x1", "El Maja",
+    "El Maja Pink", "Megalodon", "El Maja White", "El Maja Green",
+    "Megalodon Christmas", "Monster Kelelawar", "Suytu Care"
 }
 
-local selectedFish = fishes[1]
-
-local function getRandomFish()
-    return fishes[math.random(1,#fishes)]
-end
-
--- ================= GUI =================
-local ScreenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+-- GUI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "SecretFishTesterFull"
 ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = Player:WaitForChild("PlayerGui")
 
-local Main = Instance.new("Frame", ScreenGui)
-Main.Size = UDim2.fromScale(0.55,0.6)
-Main.Position = UDim2.fromScale(0.225,0.22)
-Main.BackgroundColor3 = Color3.fromRGB(30,30,30)
-Main.Active = true
-Main.Draggable = true
-Instance.new("UICorner",Main).CornerRadius = UDim.new(0,12)
+local MainFrame = Instance.new("Frame")
+MainFrame.Size = UDim2.new(0, 380, 0, 320)
+MainFrame.Position = UDim2.new(0.5, -190, 0.5, -160)
+MainFrame.BackgroundColor3 = Color3.fromRGB(40, 20, 20)
+MainFrame.BorderSizePixel = 0
+MainFrame.Active = true
+MainFrame.Parent = ScreenGui
 
--- TITLE
-local Title = Instance.new("TextLabel",Main)
-Title.Size = UDim2.new(1,-40,0,40)
-Title.Position = UDim2.new(0,10,0,0)
-Title.BackgroundTransparency = 1
-Title.Text = "Fish Spammer (Random)"
-Title.TextColor3 = Color3.new(1,1,1)
-Title.Font = Enum.Font.GothamBold
-Title.TextScaled = true
+local MainCorner = Instance.new("UICorner")
+MainCorner.CornerRadius = UDim.new(0, 12)
+MainCorner.Parent = MainFrame
 
--- MINIMIZE
-local MinBtn = Instance.new("TextButton",Main)
-MinBtn.Size = UDim2.fromOffset(30,30)
-MinBtn.Position = UDim2.new(1,-35,0,5)
-MinBtn.Text = "-"
-MinBtn.Font = Enum.Font.GothamBold
-MinBtn.TextScaled = true
-MinBtn.BackgroundColor3 = Color3.fromRGB(60,60,60)
-MinBtn.TextColor3 = Color3.new(1,1,1)
-Instance.new("UICorner",MinBtn)
+-- Title Bar
+local TitleBar = Instance.new("Frame")
+TitleBar.Size = UDim2.new(1, 0, 0, 35)
+TitleBar.BackgroundColor3 = Color3.fromRGB(60, 30, 30)
+TitleBar.Parent = MainFrame
 
--- MODE BUTTON
-local ModeBtn = Instance.new("TextButton",Main)
-ModeBtn.Size = UDim2.fromScale(0.9,0.1)
-ModeBtn.Position = UDim2.fromScale(0.05,0.14)
-ModeBtn.Text = "MODE: RANDOM"
-ModeBtn.Font = Enum.Font.GothamBold
-ModeBtn.TextScaled = true
-ModeBtn.BackgroundColor3 = Color3.fromRGB(120,70,200)
-ModeBtn.TextColor3 = Color3.new(1,1,1)
-Instance.new("UICorner",ModeBtn)
+local TBCorner = Instance.new("UICorner")
+TBCorner.CornerRadius = UDim.new(0, 12)
+TBCorner.Parent = TitleBar
 
--- SCROLL (MANUAL)
-local Scroll = Instance.new("ScrollingFrame",Main)
-Scroll.Size = UDim2.fromScale(0.9,0.4)
-Scroll.Position = UDim2.fromScale(0.05,0.27)
-Scroll.CanvasSize = UDim2.new(0,0,0,#fishes*55)
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Size = UDim2.new(1, -80, 1, 0)
+TitleLabel.BackgroundTransparency = 1
+TitleLabel.Text = "SECRET FISH TESTER"
+TitleLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+TitleLabel.TextScaled = true
+TitleLabel.Font = Enum.Font.GothamBold
+TitleLabel.Parent = TitleBar
+
+-- Minimize & Close
+local MinimizeBtn = Instance.new("TextButton")
+MinimizeBtn.Size = UDim2.new(0, 30, 0, 30)
+MinimizeBtn.Position = UDim2.new(1, -70, 0, 3)
+MinimizeBtn.BackgroundColor3 = Color3.fromRGB(255, 200, 0)
+MinimizeBtn.Text = "-"
+MinimizeBtn.TextScaled = true
+MinimizeBtn.Font = Enum.Font.GothamBold
+MinimizeBtn.Parent = TitleBar
+Instance.new("UICorner", MinimizeBtn).CornerRadius = UDim.new(0, 6)
+
+local CloseBtn = Instance.new("TextButton")
+CloseBtn.Size = UDim2.new(0, 30, 0, 30)
+CloseBtn.Position = UDim2.new(1, -35, 0, 3)
+CloseBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+CloseBtn.Text = "X"
+CloseBtn.TextScaled = true
+CloseBtn.Font = Enum.Font.GothamBold
+CloseBtn.Parent = TitleBar
+Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(0, 6)
+
+-- Draggable
+local dragging, dragStart, startPos
+TitleBar.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = MainFrame.Position
+    end
+end)
+TitleBar.InputChanged:Connect(function(input)
+    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        local delta = input.Position - dragStart
+        MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+UserInputService.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = false
+    end
+end)
+
+-- Minimize
+local minimized = false
+local normalSize = MainFrame.Size
+MinimizeBtn.MouseButton1Click:Connect(function()
+    minimized = not minimized
+    MainFrame.Size = minimized and UDim2.new(0, 380, 0, 35) or normalSize
+    MinimizeBtn.Text = minimized and "+" or "-"
+end)
+
+CloseBtn.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
+
+-- Content (di bawah title bar)
+local ContentFrame = Instance.new("Frame")
+ContentFrame.Size = UDim2.new(1, -20, 1, -45)
+ContentFrame.Position = UDim2.new(0, 10, 0, 40)
+ContentFrame.BackgroundTransparency = 1
+ContentFrame.Parent = MainFrame
+
+-- Pilih Fish Button
+local PilihButton = Instance.new("TextButton")
+PilihButton.Size = UDim2.new(1, 0, 0, 35)
+PilihButton.BackgroundColor3 = Color3.fromRGB(60, 40, 40)
+PilihButton.Text = "PILIH SECRET FISH ▼"
+PilihButton.TextScaled = true
+PilihButton.Parent = ContentFrame
+Instance.new("UICorner", PilihButton).CornerRadius = UDim.new(0, 8)
+
+-- Dropdown
+local DropdownFrame = Instance.new("Frame")
+DropdownFrame.Size = UDim2.new(1, 0, 0, 200)
+DropdownFrame.Position = UDim2.new(0, 0, 0, 40)
+DropdownFrame.BackgroundColor3 = Color3.fromRGB(60, 40, 40)
+DropdownFrame.Visible = false
+DropdownFrame.Parent = ContentFrame
+Instance.new("UICorner", DropdownFrame).CornerRadius = UDim.new(0, 8)
+
+local Scroll = Instance.new("ScrollingFrame")
+Scroll.Size = UDim2.new(1, -10, 1, -10)
+Scroll.Position = UDim2.new(0, 5, 0, 5)
 Scroll.BackgroundTransparency = 1
-Scroll.ScrollBarImageTransparency = 0.3
-Scroll.Visible = false
+Scroll.ScrollBarThickness = 8
+Scroll.Parent = DropdownFrame
 
-for i,fish in ipairs(fishes) do
-    local btn = Instance.new("TextButton",Scroll)
-    btn.Size = UDim2.new(1,0,0,45)
-    btn.Position = UDim2.new(0,0,0,(i-1)*55)
-    btn.Text = fish.name.." (Secret)"
-    btn.Font = Enum.Font.Gotham
+-- Selected Label
+local SelectedLabel = Instance.new("TextLabel")
+SelectedLabel.Size = UDim2.new(1, 0, 0, 30)
+SelectedLabel.Position = UDim2.new(0, 0, 0, 245)
+SelectedLabel.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+SelectedLabel.Text = "Fish: None | Rarity: Secret | Weight: 400-650kg"
+SelectedLabel.TextScaled = true
+SelectedLabel.Parent = ContentFrame
+Instance.new("UICorner", SelectedLabel).CornerRadius = UDim.new(0, 6)
+
+-- Delay & Result
+local DelayBox = Instance.new("TextBox")
+DelayBox.Size = UDim2.new(1, 0, 0, 30)
+DelayBox.Position = UDim2.new(0, 0, 0, 280)
+DelayBox.BackgroundColor3 = Color3.fromRGB(60, 40, 40)
+DelayBox.Text = "0.2"
+DelayBox.PlaceholderText = "Delay spam (detik)"
+DelayBox.TextScaled = true
+DelayBox.Parent = ContentFrame
+Instance.new("UICorner", DelayBox).CornerRadius = UDim.new(0, 8)
+
+local ResultLabel = Instance.new("TextLabel")
+ResultLabel.Size = UDim2.new(1, 0, 0, 40)
+ResultLabel.Position = UDim2.new(0, 0, 0, 315)
+ResultLabel.BackgroundTransparency = 1
+ResultLabel.Text = "Result: Pilih fish & tes!"
+ResultLabel.TextWrapped = true
+ResultLabel.TextScaled = true
+ResultLabel.Parent = ContentFrame
+
+-- Buttons Tes & Spam
+local ButtonTes = Instance.new("TextButton")
+ButtonTes.Size = UDim2.new(0.48, -5, 0, 40)
+ButtonTes.Position = UDim2.new(0, 0, 0, 360)
+ButtonTes.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
+ButtonTes.Text = "TES SEKALI"
+ButtonTes.TextScaled = true
+ButtonTes.Parent = ContentFrame
+Instance.new("UICorner", ButtonTes).CornerRadius = UDim.new(0, 8)
+
+local ButtonSpam = Instance.new("TextButton")
+ButtonSpam.Size = UDim2.new(0.48, -5, 0, 40)
+ButtonSpam.Position = UDim2.new(0.52, 5, 0, 360)
+ButtonSpam.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+ButtonSpam.Text = "START SPAM"
+ButtonSpam.TextScaled = true
+ButtonSpam.Parent = ContentFrame
+Instance.new("UICorner", ButtonSpam).CornerRadius = UDim.new(0, 8)
+
+-- Dropdown buttons
+local y = 0
+for _, fish in ipairs(secretFishes) do
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(1, -10, 0, 35)
+    btn.Position = UDim2.new(0, 5, 0, y)
+    btn.BackgroundColor3 = Color3.fromRGB(80, 60, 60)
+    btn.Text = fish
     btn.TextScaled = true
-    btn.BackgroundColor3 = Color3.fromRGB(50,50,50)
-    btn.TextColor3 = Color3.new(1,1,1)
-    Instance.new("UICorner",btn)
-
+    btn.Parent = Scroll
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 6)
+    
     btn.MouseButton1Click:Connect(function()
         selectedFish = fish
-        Title.Text = "Manual: "..fish.name
+        SelectedLabel.Text = "Fish: " .. fish .. " | Rarity: Secret | Weight: Random 400-650kg"
+        DropdownFrame.Visible = false
+        PilihButton.Text = "PILIH SECRET FISH ▼"
     end)
+    
+    y = y + 40
 end
+Scroll.CanvasSize = UDim2.new(0, 0, 0, y)
 
--- SPAM BUTTON
-local SpamBtn = Instance.new("TextButton",Main)
-SpamBtn.Size = UDim2.fromScale(0.42,0.12)
-SpamBtn.Position = UDim2.fromScale(0.05,0.72)
-SpamBtn.Text = "SPAM OFF"
-SpamBtn.Font = Enum.Font.GothamBold
-SpamBtn.TextScaled = true
-SpamBtn.BackgroundColor3 = Color3.fromRGB(170,0,0)
-SpamBtn.TextColor3 = Color3.new(1,1,1)
-Instance.new("UICorner",SpamBtn)
+PilihButton.MouseButton1Click:Connect(function()
+    DropdownFrame.Visible = not DropdownFrame.Visible
+    PilihButton.Text = DropdownFrame.Visible and "TUTUP LIST ▲" or "PILIH SECRET FISH ▼"
+end)
 
--- ONCE BUTTON
-local OnceBtn = Instance.new("TextButton",Main)
-OnceBtn.Size = UDim2.fromScale(0.42,0.12)
-OnceBtn.Position = UDim2.fromScale(0.53,0.72)
-OnceBtn.Text = "CATCH ONCE"
-OnceBtn.Font = Enum.Font.GothamBold
-OnceBtn.TextScaled = true
-OnceBtn.BackgroundColor3 = Color3.fromRGB(0,85,170)
-OnceBtn.TextColor3 = Color3.new(1,1,1)
-Instance.new("UICorner",OnceBtn)
+-- Logic
+local selectedFish = nil
+local spamming = false
+local spamCount = 0
 
--- ================= LOGIC =================
-local function fireFish()
-    local fish
-    if randomMode then
-        fish = getRandomFish()
-        Title.Text = "Random: "..fish.name
-    else
-        fish = selectedFish
+local function getPosition()
+    local char = Player.Character
+    if char and char:FindFirstChild("HumanoidRootPart") then
+        return char.HumanoidRootPart.Position
     end
-
-    FishGiver:FireServer({
-        hookPosition = hookPosition,
-        name = fish.name,
-        rarity = fish.rarity,
-        weight = getRandomWeight(),
-        publishGlobally = false
-    })
+    return Vector3.new(0, 100, 0)
 end
 
-task.spawn(function()
+local function giveFish()
+    if not Event or not selectedFish then
+        ResultLabel.Text = "Error: Event/fish belum ready!"
+        return
+    end
+    local weight = math.random(400, 650)
+    local pos = getPosition()
+    
+    pcall(function()
+        Event:FireServer(true, {
+            hookPosition = pos,
+            name = selectedFish,
+            rarity = "Secret",
+            weight = weight
+        })
+    end)
+    
+    spamCount += 1
+    ResultLabel.Text = "Fired! " .. selectedFish .. " (" .. weight .. "kg) # " .. spamCount
+end
+
+ButtonTes.MouseButton1Click:Connect(giveFish)
+
+spawn(function()
     while true do
-        if running then
-            fireFish()
-            task.wait(delayTime)
-        else
-            task.wait(0.1)
+        if spamming then
+            giveFish()
+            wait(tonumber(DelayBox.Text) or 0.2)
         end
+        wait(0.1)
     end
 end)
 
--- BUTTON EVENTS
-SpamBtn.MouseButton1Click:Connect(function()
-    running = not running
-    SpamBtn.Text = running and "SPAM ON" or "SPAM OFF"
-    SpamBtn.BackgroundColor3 = running and Color3.fromRGB(0,170,0) or Color3.fromRGB(170,0,0)
+ButtonSpam.MouseButton1Click:Connect(function()
+    if not selectedFish then return end
+    spamming = not spamming
+    ButtonSpam.Text = spamming and "STOP SPAM" or "START SPAM"
+    ButtonSpam.BackgroundColor3 = spamming and Color3.fromRGB(100, 0, 0) or Color3.fromRGB(200, 0, 0)
 end)
 
-OnceBtn.MouseButton1Click:Connect(function()
-    fireFish()
+Player.CharacterAdded:Connect(function()
+    wait(1) -- Tunggu HRP spawn
 end)
 
-ModeBtn.MouseButton1Click:Connect(function()
-    randomMode = not randomMode
-    Scroll.Visible = not randomMode
-    ModeBtn.Text = randomMode and "MODE: RANDOM" or "MODE: MANUAL"
-    Title.Text = randomMode and "Fish Spammer (Random)" or "Fish Spammer (Manual)"
-end)
-
-MinBtn.MouseButton1Click:Connect(function()
-    minimized = not minimized
-    for _,v in ipairs(Main:GetChildren()) do
-        if (v:IsA("TextButton") or v:IsA("TextLabel") or v:IsA("ScrollingFrame")) and v ~= MinBtn then
-            v.Visible = not minimized
-        end
-    end
-    MinBtn.Text = minimized and "+" or "-"
-    Main.Size = minimized and UDim2.fromOffset(140,40) or UDim2.fromScale(0.55,0.6)
-end)
+print("✅ FULL SCRIPT LOADED! GUI lengkap sekarang. Drag dari title, minimize dengan -, pindah bebas di mobile!")
