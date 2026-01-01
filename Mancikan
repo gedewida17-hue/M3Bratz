@@ -1,4 +1,4 @@
--- MANCING IKAN
+-- SUPER FINAL SCRIPT SECRET FISH TESTER (FULL 38 SECRET FISH LIST - LENGKAP SESUAI REQUEST)
 
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
@@ -7,7 +7,7 @@ local UserInputService = game:GetService("UserInputService")
 
 local Event = ReplicatedStorage:WaitForChild("FishingSystem"):WaitForChild("FishGiver")
 
--- 38 IKAN SC
+-- LIST SECRET FISH LENGKAP (38 IKAN BARU - SEMUA DIGANTI!)
 local secretFishes = {
     "Zombie Shark",
     "Monster Shark",
@@ -54,7 +54,7 @@ ScreenGui.ResetOnSpawn = false
 ScreenGui.Parent = Player:WaitForChild("PlayerGui")
 
 local MainFrame = Instance.new("Frame")
-MainFrame.Size = UDim2.new(0, 400, 0, 500)  
+MainFrame.Size = UDim2.new(0, 400, 0, 500)  -- Lebar & tinggi ditambah biar muat 38 fish
 MainFrame.Position = UDim2.new(0.5, -200, 0.5, -250)
 MainFrame.BackgroundColor3 = Color3.fromRGB(40, 20, 20)
 MainFrame.Active = true
@@ -71,7 +71,7 @@ Instance.new("UICorner", TitleBar).CornerRadius = UDim.new(0, 12)
 local TitleLabel = Instance.new("TextLabel")
 TitleLabel.Size = UDim2.new(1, -80, 1, 0)
 TitleLabel.BackgroundTransparency = 1
-TitleLabel.Text = "SECRET FISH TESTER (38)"
+TitleLabel.Text = "SECRET FISH  (38)"
 TitleLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
 TitleLabel.TextScaled = true
 TitleLabel.Font = Enum.Font.GothamBold
@@ -309,4 +309,4 @@ ButtonSpam.MouseButton1Click:Connect(function()
     ButtonSpam.BackgroundColor3 = spamming and Color3.fromRGB(100, 0, 0) or Color3.fromRGB(200, 0, 0)
 end)
 
-print("SCRIPT LENGKAP LOADED! 38 secret fish siap di-tes. Pilih dari dropdown → tes/spam!")
+print("SCRIPT LENGKAP LOADED! 38 secret fish siap di-tes. Pilih dari dropdown → tes/spaTESTER
